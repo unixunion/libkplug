@@ -10,7 +10,7 @@ SOURCE_DIR = os.path.join(ROOT_DIR)
 version_py = os.path.join(os.path.dirname(__file__), 'version.py')
 
 install_requires = [
-    'pyyaml==3.13'
+    'pyyaml>=4.2b1'
 ]
 
 try:
