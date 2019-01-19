@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+__author__ = 'Kegan Holtzhausen <marzubus@gmail.com>'
+
 import os
 import sys
 import logging

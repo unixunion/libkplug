@@ -1,3 +1,6 @@
+
+__author__ = 'Kegan Holtzhausen <marzubus@gmail.com>'
+
 import logging
 import _thread
 import time
