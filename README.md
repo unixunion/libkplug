@@ -26,7 +26,7 @@ while True:
     pass
 ```
 
-See example/ for more details
+See [example](/example) for more details
 
 The instances of HELLO_WORLD_CLASS then thread and do their work:
 
