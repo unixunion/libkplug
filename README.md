@@ -11,8 +11,10 @@ Q: How do I instantiate plugins without "knowing" the type
 
 A: Code
 ```python
-clazz = libkplug.plugin_registry(settings.MY_HELLO_WORLD_CLASS)
-myinst = clazz(settings=settings)
+# read the class
+clazz = libkplug.plugin_registry('SomePluginName')
+# instantiate with kwargs
+myinst = clazz(key1=1, keyN='N')
 ```
 
 ## Installation
@@ -111,6 +113,74 @@ class HelloWorldPlugin(KPlugin):
         return "Hello World"
 
 ```
+
+### Initialize the Plugin System
+
+```python
+>>> # init libkplug
+>>> import libkplug
+>>> # check current plugins
+>>> print(libkplug.plugin_registry.plugins_dict)
+OrderedDict()
+```
+
+### Register a Plugin with KSettings
+
+```python
+>>> import libksettings
+>>> import libkplug
+__init__.py:157 INFO Initializing plugin architecture
+__init__.py:67 INFO Plugin Init: (), {}
+>>> settings = libksettings.KSettings(PLUGINS=['plugins.plugin_helloworld'], load_yaml=False)
+__init__.py:56 INFO Setting default PLUGINS = ['plugins.plugin_helloworld']
+__init__.py:87 INFO YAML loading disabled
+__init__.py:96 INFO Plugins to load: ['plugins.plugin_helloworld']
+__init__.py:99 INFO Attempting to load plugin: plugins.plugin_helloworld
+__init__.py:80 INFO Registering Plugin id: HelloWorldPlugin from class: <class 'plugins.plugin_helloworld.HelloWorldPlugin'> 
+__init__.py:111 INFO Config: {'PLUGINS': ['plugins.plugin_helloworld']}
+>>> 
+```
+
+### Register a Plugin Manually
+
+Importing any file containing classes decorated with `@libkplug.plugin_registry.register` will register the plugins. Just
+be sure to import libkplug before.
+
+```python
+>>> import libkplug
+__init__.py:157 INFO Initializing plugin architecture
+__init__.py:67 INFO Plugin Init: (), {}
+>>> import plugins.plugin_helloworld
+__init__.py:80 INFO Registering Plugin id: HelloWorldPlugin from class: <class 'plugins.plugin_helloworld.HelloWorldPlugin'> 
+>>> 
+
+```
+
+### Plugin Static Methods
+
+Static methods work as expected, and do not require instantiation of the plugin, it only needs to be loaded to work.
+
+```python
+>>> import libkplug
+>>> import plugins.plugin_helloworld
+>>> libkplug.plugin_registry('HelloWorldPlugin').hello_world()
+'Hello World'
+```
+
+
+### Plugin Instantiation
+
+Instantiation is done by determining the class, and then passing in kwargs to the constructor as usual.
+
+```python
+>>> import libkplug
+>>> import plugins.plugin_helloworld
+>>> # read the class
+>>> clazz = libkplug.plugin_registry('HelloWorldPlugin')
+>>> # instantiate with kwargs
+>>> myinst = clazz(key1=1, keyN='N')
+```
+
 
 ## libksettings
 
