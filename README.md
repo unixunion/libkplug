@@ -89,6 +89,7 @@ from libkplug import KPlugin
 # a inline plugin registration
 @libkplug.plugin_registry.register
 class HelloWorldPlugin(KPlugin):
+    # this is the identifier for when calling the plugin, should almost always be the class name
     plugin_name = 'HelloWorldPlugin'
 
     def __init__(self, *args, **kwargs):
