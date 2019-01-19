@@ -26,8 +26,8 @@ python setup.py install
 
 ### Simple Example
 
-This is a simple example, which will load the module plugins.plugun_helloworld, which contains a class 'HelloWorldPlugin',
-and then instantiate a instance of the plugin by its name as read from config.
+This is a simple example, which will load the module `plugins.plugin_helloworld`, which contains a class `HelloWorldPlugin`,
+The program then instantiate a instance of the plugin by its name which is a string.
 
 ```python
 # import libkplug before settings
