@@ -42,10 +42,6 @@ class KSettings:
         for k, v in kwargs.items():
             self.defaults[k] = v
 
-        # warn if plugins not set, probably should move this to libkplug
-        if 'PLUGINS' not in kwargs:
-            logging.warning("no plugins will be loaded, because missing kwarg 'PLUGINS', e.g PLUGINS=['foo', 'bar']")
-
         try:
             self.config_file = os.getenv(default_config_envvar, default=default_config)
         except Exception as e:
@@ -62,7 +58,7 @@ class KSettings:
 
         # set the defaults
         for default in self.defaults:
-            logging.info("Setting config %s:%s" % (default, self.defaults[default]))
+            logging.info("Setting default %s = %s" % (default, self.defaults[default]))
             if export_global:
                 globals()[default] = self.defaults[default]
             self.config[default] = self.defaults[default]
@@ -72,16 +68,22 @@ class KSettings:
 
         # get the real values if any
         for variable in yaml_settings.keys():
-            logging.info("Setting config %s:%s" % (variable, yaml_settings[variable]))
+            logging.info("Setting config %s = %s" % (variable, yaml_settings[variable]))
             if export_global:
                 globals()[variable] = yaml_settings[variable]
             self.config[variable] = yaml_settings[variable]
 
         self.yaml_loaded = True
-        logging.debug("Yaml loaded successful")
+        logging.info("Yaml loaded successful")
 
-        for p in globals()['PLUGINS']:
-            logging.info("Loading plugin: %s" % p)
+        # warn if plugins not set, probably should move this to libkplug
+        if 'PLUGINS' not in kwargs and 'PLUGINS' not in self.config:
+            logging.warning("no plugins will be loaded, because missing kwarg 'PLUGINS', e.g PLUGINS=['foo', 'bar']")
+        else:
+            logging.info("Plugins to load: %s" % self.config['PLUGINS'])
+
+        for p in self.config['PLUGINS']:
+            logging.info("Attempting to load plugin: %s" % p)
             try:
                 __import__(p, globals())
             except Exception as e:
@@ -94,4 +96,9 @@ class KSettings:
             raise Exception(msg)
 
     def __getattr__(self, item):
-        return self.defaults[item]
+        try:
+            return self.config[item]
+        except Exception as e:
+            logging.error(e)
+            logging.error(self.config)
+            raise

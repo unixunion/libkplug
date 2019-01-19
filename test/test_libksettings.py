@@ -6,6 +6,7 @@ sys.path.insert(1, os.path.join(sys.path[0], '../../src'))
 import unittest
 from libksettings import KSettings
 
+
 class UnitTests(unittest.TestCase):
 
     def setUp(self):

@@ -1,0 +1,5 @@
+KEY1: VAL1
+PLUGINS:
+  - plugins.plugin_helloworld
+
+MY_HELLO_WORLD_CLASS: HelloWorldPlugin

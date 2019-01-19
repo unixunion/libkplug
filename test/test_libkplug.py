@@ -19,7 +19,6 @@ class UnitTests(unittest.TestCase):
         self.registry = KPlugin()
 
     def test_plugin_class_register(self):
-
         # initializes the plugin system
         import libkplug
 
