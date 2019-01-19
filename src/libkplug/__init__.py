@@ -61,7 +61,7 @@ class KPlugin(object):
     def __init__(self, *args, **kwargs):
         logging.info("Plugin Init: %s, %s" % (args, kwargs))
 
-    def register(self, object_class, *args, **kwargs):
+    def register(self, object_class):
         """
         Registers a object with the plugin registry, typically used as a decorator.
         :param object_class: the class to register as a plugin
@@ -76,12 +76,6 @@ class KPlugin(object):
         o = object_class
         self.plugins.append(o)
         self.plugins_dict[object_class.plugin_name] = o
-
-        # def _d(fn):
-        #     return functools.update_wrapper(object_class(fn), fn)
-        #
-        # functools.update_wrapper(_d, object_class)
-        # return _d
 
     def __call__(self, *args, **kwargs):
         """
