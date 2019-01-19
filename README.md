@@ -28,28 +28,30 @@ python setup.py install
 
 ### Simple Example
 
-This is a simple example, which will load the module `plugins.plugin_helloworld`, which contains a class `HelloWorldPlugin`,
-The program then instantiate a instance of the plugin by its name which is a string.
+This is a simple example, which will load the module `[plugins.plugin_helloworld](/example/plugins/plugin_helloworld.py)`, 
+which contains a plugin `HelloWorldPlugin`. The program then instantiates a instance via the registry, using the plugin 
+name as an argument.
 
 ```python
-# import libkplug before settings
+# import libkplug
 import libkplug
 from libksettings import KSettings
 
-# initialize settings with some defaults, supressing yaml file load
+# initialize settings with some defaults, suppressing config.yaml file loading
 settings = KSettings(MY_HELLO_WORLD_CLASS='HelloWorldPlugin', PLUGINS=['plugins.plugin_helloworld'], load_yaml=False)
 
 # get the class of the plugin
 clazz = libkplug.plugin_registry(settings.MY_HELLO_WORLD_CLASS)
 
-# instantiate it passing in the settings object, this runs init on the class
-inst = clazz(settings=settings)
+# instantiate it passing in args and kwargs if needed
+inst = clazz(True, "Foo", kwarg1=1, kwargN="N")
 
+# keep the program in a loop
 while True:
     pass
 ```
 
-The output for the above example:
+The output
 
 ```bash
 $> python run.py 
@@ -80,23 +82,23 @@ plugin_helloworld.py:38 INFO Thread-1: Sat Jan 19 09:35:26 2019
 
 ### Sample Application
 
-See [example](/example) which loads a yaml file, and starts a plugin which has two threads.
+See [example](/example) which loads config.yaml file, and starts a plugin which has two threads.
 
 
 ## libkplug
 
-libkplug provides the plugin_registry, and plugin registration decorators. Example plugin:
+libkplug provides the KPlugin base class, plugin_registry, and plugin registration decorators. 
 
+Simple example plugin:
 ```python
 import logging
 
 # initializes the plugin system
 import libkplug
-from libkplug import KPlugin
 
 # a inline plugin registration
 @libkplug.plugin_registry.register
-class HelloWorldPlugin(KPlugin):
+class HelloWorldPlugin(libkplug.KPlugin):
     # this is the identifier for when calling the plugin, should almost always be the class name
     plugin_name = 'HelloWorldPlugin'
 
