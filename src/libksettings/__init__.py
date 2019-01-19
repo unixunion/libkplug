@@ -30,8 +30,8 @@ class KSettings:
 
     Examples:
 
-        >>> from libksettings import KSettings
-        >>> settings = KSettings(A="boo", B=2, C=True, PLUGINS=[])
+        >>> import libksettings
+        >>> settings = libksettings.KSettings(A="boo", B=2, C=True, PLUGINS=[])
         >>> settings.A
         'boo'
 
