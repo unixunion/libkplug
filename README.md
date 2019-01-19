@@ -122,6 +122,9 @@ class HelloWorldPlugin(KPlugin):
 >>> # check current plugins
 >>> print(libkplug.plugin_registry.plugins_dict)
 OrderedDict()
+>>> import plugins.plugin_helloworkd
+>>> print(libkplug.plugin_registry.plugins_dict)
+OrderedDict([('HelloWorldPlugin', <class 'plugins.plugin_helloworld.HelloWorldPlugin'>)])
 ```
 
 ### Register a Plugin with KSettings
