@@ -3,10 +3,13 @@
 libkplug is a simple framework for creating modular, configuration driven python applications.
 
 Q: How is this different from just standard modular development.
+
 A: The use cases for libkplug stem from a need to name classes to use for specific workloads at a configuration level, 
 and load and operate instances of those classes from named methods. .e.g `plugin_registry('some_plugin').my_static_method()` 
 
 Q: How do I instantiate plugins without "knowing" the type
+
+A: Code
 ```python
 clazz = libkplug.plugin_registry(settings.MY_HELLO_WORLD_CLASS)
 myinst = clazz(settings=settings)
