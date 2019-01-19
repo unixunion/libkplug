@@ -52,3 +52,17 @@ plugin_helloworld.py:38 INFO Thread-2: Sat Jan 19 09:35:26 2019
 plugin_helloworld.py:38 INFO Thread-1: Sat Jan 19 09:35:26 2019
 
 ```
+
+## libksettings
+
+Provides simple YAML loading from args, kwargs, environment variables and file.
+
+Example initializing with DEFAULTS
+```python
+>>> from libksettings import KSettings
+>>> settings = KSettings(A='a', b=1, c=True, PLUGINS=['plugins.plugin_helloworld'], load_yaml_file=False)
+>>> settings.A
+'boo'
+>>> settings.B
+1
+```
