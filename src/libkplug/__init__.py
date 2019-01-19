@@ -77,11 +77,11 @@ class KPlugin(object):
         self.plugins.append(o)
         self.plugins_dict[object_class.plugin_name] = o
 
-        def _d(fn):
-            return functools.update_wrapper(object_class(fn), fn)
-
-        functools.update_wrapper(_d, object_class)
-        return _d
+        # def _d(fn):
+        #     return functools.update_wrapper(object_class(fn), fn)
+        #
+        # functools.update_wrapper(_d, object_class)
+        # return _d
 
     def __call__(self, *args, **kwargs):
         """
