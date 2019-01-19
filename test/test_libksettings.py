@@ -46,5 +46,10 @@ class UnitTests(unittest.TestCase):
         self.assertEqual(settings.c, True)
         self.assertEqual(settings.KEY2, 'VAL2')
 
+    def test_global_accessability(self):
+        settings1 = libksettings.KSettings(A='a', b=1, c=True, PLUGINS=[], load_yaml=False)
+        settings2 = libksettings.KSettings(load_yaml=False)
+        self.assertEqual(settings1.A, settings2.A)
+
 if __name__ == "__main__":
     unittest.main()

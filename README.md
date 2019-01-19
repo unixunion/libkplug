@@ -108,11 +108,32 @@ class HelloWorldPlugin(KPlugin):
 
 ## libksettings
 
-KSettings is designed to load yaml files, set defaults, and initialize plugins listed in `PLUGINS` 
+KSettings is designed to load yaml files, set defaults, and initialize plugins listed in `PLUGINS`.
+
+IMPORTANT: KSettings is "global", so once instantiated with "defaults" and or a config, any other part of the application
+can import KSettings and access previously set values without reloading the config or redefining defaults. That said you
+might want to use namespaced defaults if plugins need to declare defaults.
+
+Example of separate instances "sharing" config
+```python
+>>> import libksettings
+>>> settings1 = libksettings.KSettings(A='a', b=1, c=True, PLUGINS=[], load_yaml=False)
+>>> settings2 = libksettings.KSettings(load_yaml=False)
+>>> settings1.A == settings2.A
+True
+```
+
+Example if separate instances declaring new defaults
+```python
+>>> import libksettings
+>>> foo_settings = libksettings.KSettings(A='a', b=1, c=True, PLUGINS=[], load_yaml=False, FOO_DEFAULT="foo")
+>>> bar_settings = libksettings.KSettings(A='a', b=1, c=True, PLUGINS=[], load_yaml=False, BAR_DEFAULT="bar")
+>>> foo_settings.BAR_DEFAULT
+'bar'
+```
 
 When KSettings is instantiated, it will use all kwargs as 'default' initial values, then load the yaml file, overriding
 any defaults, finally it loads the Plugins, and returns a instance of itself.
-
 
 Example initializing without config file, setting some defaults, and not loading plugins, 
 ```python
@@ -123,6 +144,7 @@ Example initializing without config file, setting some defaults, and not loading
 >>> settings.B
 1
 ```
+
 
 Example initializing with DEFAULTS and named config file, and default plugins
 
