@@ -12,8 +12,16 @@ clazz = libkplug.plugin_registry(settings.MY_HELLO_WORLD_CLASS)
 myinst = clazz(settings=settings)
 ```
 
+## Installation
 
-Simple Example:
+```bash
+source /my/venv/bin/activate
+python setup.py install
+```
+
+## Usage
+
+### Simple Example:
 
 ```python
 # import libkplug before settings
@@ -62,8 +70,40 @@ plugin_helloworld.py:38 INFO Thread-1: Sat Jan 19 09:35:26 2019
 ```
 
 
+### Sample Application
+
 See [example](/example) which loads a yaml file, and starts a plugin which has two threads.
 
+
+## libkplug
+
+libkplug provides the plugin_registry, and plugin registration decorators. Example plugin:
+
+```python
+import logging
+
+# initializes the plugin system
+import libkplug
+from libkplug import KPlugin
+
+# a inline plugin registration
+@libkplug.plugin_registry.register
+class HelloWorldPlugin(KPlugin):
+    plugin_name = 'HelloWorldPlugin'
+
+    def __init__(self, *args, **kwargs):
+        logging.info('Instantiating instance of: %s args: %s and kwargs: %s' % (self.plugin_name, args, kwargs))
+
+    def hello(self, name="default"):
+        logging.info("Hello %s from %s instance method" % (name, self))
+        return name
+
+    @staticmethod
+    def hello_world():
+        logging.info("Hello World")
+        return "Hello World"
+
+```
 
 ## libksettings
 
@@ -109,4 +149,5 @@ Example initializing with DEFAULTS and named config file from env var
 >>> settings.B
 1
 ```
+
 
