@@ -2,7 +2,7 @@ import yaml
 import os
 import logging
 
-__author__ = 'keghol'
+__author__ = 'Kegan Holtzhausen <marzubus@gmail.com>'
 
 logging = logging.getLogger(__name__)
 
