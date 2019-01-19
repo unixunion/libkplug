@@ -12,11 +12,11 @@ logging.basicConfig(format='%(filename)s:%(lineno)s %(levelname)s %(message)s', 
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger().setLevel(logging.INFO)
 
-# import libkplug before settings
+# import libkplug before settings, but after logging
 import libkplug
 from libksettings import KSettings
 
-# initialize settings with some default
+# initialize settings with some default values
 settings = KSettings(MY_HELLO_WORLD_CLASS='HelloWorldPlugin', PLUGINS=['plugins.plugin_helloworld'])
 
 logging.info("Starting up")

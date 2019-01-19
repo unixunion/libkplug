@@ -2,3 +2,4 @@
 venv
 *.py[cod]
 __pycache__/
+libkplug.egg-info/

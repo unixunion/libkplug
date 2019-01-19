@@ -1,12 +1,19 @@
 # libkplug
 
-libkplug is a simple framework for creating pluggable python applications, which allow for the abstraction, instantiation 
-and usage of classes and static methods.
+libkplug is a simple framework for creating modular, configuration driven python applications.
 
-This simple framework is for loading config from YAML, and then instantiating objects based off configuration, passing
-in the config into the 'plugins'
+Q: How is this different from just standard modular development.
+A: The use cases for libkplug stem from a need to name classes to use for specific workloads at a configuration level, 
+and load and operate instances of those classes from named methods. .e.g `plugin_registry('some_plugin').my_static_method()` 
 
-Example:
+Q: How do I instantiate plugins without "knowing" the type
+```python
+clazz = libkplug.plugin_registry(settings.MY_HELLO_WORLD_CLASS)
+myinst = clazz(settings=settings)
+```
+
+
+Simple Example:
 
 ```python
 # import libkplug before settings
@@ -26,9 +33,7 @@ while True:
     pass
 ```
 
-See [example](/example) for more details
-
-The instances of HELLO_WORLD_CLASS then thread and do their work:
+The output for the above example:
 
 ```bash
 $> python run.py 
@@ -56,21 +61,29 @@ plugin_helloworld.py:38 INFO Thread-1: Sat Jan 19 09:35:26 2019
 
 ```
 
+
+See [example](/example) which loads a yaml file, and starts a plugin which has two threads.
+
+
 ## libksettings
 
-KSettings is designed to load yaml files, and kwargs passed to it are the "defaults". 
+KSettings is designed to load yaml files, set defaults, and initialize plugins listed in `PLUGINS` 
 
-Example initializing with DEFAULTS only, no config loading
+When KSettings is instantiated, it will use all kwargs as 'default' initial values, then load the yaml file, overriding
+any defaults, finally it loads the Plugins, and returns a instance of itself.
+
+
+Example initializing without config file, setting some defaults, and not loading plugins, 
 ```python
 >>> from libksettings import KSettings
->>> settings = KSettings(A='a', b=1, c=True, PLUGINS=['plugins.plugin_helloworld'], load_yaml=False)
+>>> settings = KSettings(A='a', b=1, c=True, PLUGINS=[], load_yaml=False)
 >>> settings.A
 'boo'
 >>> settings.B
 1
 ```
 
-Example initializing with DEFAULTS and named config file.
+Example initializing with DEFAULTS and named config file, and default plugins
 
 ```python
 >>> from libksettings import KSettings
@@ -79,9 +92,12 @@ Example initializing with DEFAULTS and named config file.
 'boo'
 >>> settings.B
 1
+>>> settings.SOME_YAML_KEY
+'bar'
+
 ```
 
-Example initializing with DEFAULTS and config file from env var
+Example initializing with DEFAULTS and named config file from env var
 
 ```python
 >>> import os

@@ -13,10 +13,10 @@ install_requires = [
     'pyyaml>=4.2b1'
 ]
 
-try:
-    import importlib
-except ImportError:
-    install_requires.append('importlib')
+# try:
+#     import importlib
+# except ImportError:
+#     install_requires.append('importlib')
 
 try:
     p = subprocess.Popen(['git', 'describe'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
