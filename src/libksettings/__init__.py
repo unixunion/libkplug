@@ -20,6 +20,14 @@ class KSettings:
 
         LIBKCONFIG="/tmp/my.yaml" ...
 
+
+    :param config_filename: The default filename to check for
+    :param config_filename_envvar: The environment variable name which sets filenames to load
+    :param export_global: Export config to globals
+    :param load_yaml_file: Load from file. If False, only defaults passed in as kwargs are set.
+    :param kwargs: Default keys to set
+
+
     Examples:
 
         >>> from libksettings import KSettings
@@ -36,25 +44,12 @@ class KSettings:
     config = {}
     config_file = ""
 
-    def __init__(self, default_config='config.yaml', default_config_envvar='LIBKCONFIG', export_global=True, **kwargs):
+    def __init__(self, config_filename='config.yaml', config_filename_envvar='LIBKCONFIG', export_global=True,
+                 load_yaml=True, **kwargs):
 
         # copy kwargs into "defaults"
         for k, v in kwargs.items():
             self.defaults[k] = v
-
-        try:
-            self.config_file = os.getenv(default_config_envvar, default=default_config)
-        except Exception as e:
-            logging.error("%s: unable to location config file: %s" % (e, self.config_file))
-            logging.error(e)
-
-        if not os.path.exists(self.config_file):
-            logging.error("No config file present: %s" % self.config_file)
-            raise FileNotFoundError("no config file presend: %s" % self.config_file)
-
-        logging.info("Loading yaml file: %s" % self.config_file)
-        stream = open(self.config_file, 'r')
-        yaml_settings = yaml.load(stream)
 
         # set the defaults
         for default in self.defaults:
@@ -63,18 +58,36 @@ class KSettings:
                 globals()[default] = self.defaults[default]
             self.config[default] = self.defaults[default]
 
+        if load_yaml:
+            try:
+                self.config_file = os.getenv(config_filename_envvar, default=config_filename)
+            except Exception as e:
+                logging.error("%s: unable to location config file: %s" % (e, self.config_file))
+                logging.error(e)
+
+            if not os.path.exists(self.config_file):
+                logging.error("No config file present: %s" % self.config_file)
+                raise FileNotFoundError("no config file presend: %s" % self.config_file)
+
+            logging.info("Loading yaml file: %s" % self.config_file)
+            stream = open(self.config_file, 'r')
+            yaml_settings = yaml.load(stream)
+
+
+            # get the real values if any
+            for variable in yaml_settings.keys():
+                logging.info("Setting config %s = %s" % (variable, yaml_settings[variable]))
+                if export_global:
+                    globals()[variable] = yaml_settings[variable]
+                self.config[variable] = yaml_settings[variable]
+
+            self.yaml_loaded = True
+            logging.info("Yaml loaded successful")
+        else:
+            logging.info("YAML loading disabled")
+
         # TODO FIXME
         # get each plugins "default" variables and add to globals
-
-        # get the real values if any
-        for variable in yaml_settings.keys():
-            logging.info("Setting config %s = %s" % (variable, yaml_settings[variable]))
-            if export_global:
-                globals()[variable] = yaml_settings[variable]
-            self.config[variable] = yaml_settings[variable]
-
-        self.yaml_loaded = True
-        logging.info("Yaml loaded successful")
 
         # warn if plugins not set, probably should move this to libkplug
         if 'PLUGINS' not in kwargs and 'PLUGINS' not in self.config:
@@ -90,15 +103,17 @@ class KSettings:
                 logging.error("Failed to import plugin %s" % p)
                 raise
 
-        if self.yaml_loaded is False:
+        if self.yaml_loaded is False and load_yaml:
             msg = "Failed to find config file"
             logging.error(msg)
             raise Exception(msg)
 
+        logging.info("Config: %s" % self.config)
+
     def __getattr__(self, item):
         try:
             return self.config[item]
-        except Exception as e:
+        except KeyError as e:
             logging.error(e)
             logging.error(self.config)
             raise

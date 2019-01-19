@@ -17,7 +17,7 @@ import libkplug
 from libksettings import KSettings
 
 # initialize settings with some default
-settings = KSettings(A="boo", B=2, C=True)
+settings = KSettings(MY_HELLO_WORLD_CLASS='HelloWorldPlugin', PLUGINS=['plugins.plugin_helloworld'])
 
 logging.info("Starting up")
 

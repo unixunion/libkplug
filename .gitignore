@@ -1,4 +1,4 @@
 .idea
 venv
-*.pyc
-__pycache__
+*.py[cod]
+__pycache__/
