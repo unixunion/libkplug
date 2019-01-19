@@ -28,7 +28,7 @@ python setup.py install
 
 ### Simple Example
 
-This is a simple example, which will load the module `[plugins.plugin_helloworld](/example/plugins/plugin_helloworld.py)`, 
+This is a simple example, which will load the module [plugins.plugin_helloworld](/example/plugins/plugin_helloworld.py), 
 which contains a plugin `HelloWorldPlugin`. The program then instantiates a instance via the registry, using the plugin 
 name as an argument.
 
