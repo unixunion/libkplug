@@ -1,6 +1,6 @@
 import inspect
 
-__author__ = 'Kegan Holtzhausen <Kegan.Holtzhausen@unibet.com>'
+__author__ = 'Kegan Holtzhausen <marzubus@gmail.com>'
 
 """
 The plugin system
@@ -14,7 +14,7 @@ logging = logging.getLogger(__name__)
 
 
 class KPluginClass(type):
-    """This is a metaclass for construction only, see Plugin rather"""
+    """This is a metaclass for construction only, see KPlugin rather"""
 
     def __new__(cls, clsname, bases, dct):
         new_object = super(KPluginClass, cls).__new__(cls, clsname, bases, dct)
@@ -43,18 +43,13 @@ class KPlugin(object):
         >>> libkplug.plugin_registry('BarPlugin').gbye()
         >>> import pprint
         >>> pprint.pprint(dir(libkplug.plugin_registry('BarPlugin')))
+
     Plugin Instantiation:
-    >>> import libkplug.settingsloader as settings
-    >>> from libkplug.SolaceAPI import SolaceAPI
-    >>> api = SolaceAPI("dev")
-    >>> my_plugin = api.manage("NullPlugin")
-    >>> type(my_plugin)
-    <class 'libsolace.items.NullPlugin.NullPlugin'>
-    Direct Instantiation:
-    >>> import libsolace.settingsloader as settings
-    >>> import libsolace
-    >>> my_clazz = libsolace.plugin_registry("NullPlugin", settings=settings)
-    >>> my_instance = my_clazz(settings=settings)
+    >>> import libkplug
+    >>> import libksettings
+    >>> import plugins.plugin_helloworld
+    >>> libkplug.plugin_registry('HelloWorldPlugin').hello_world()
+    'Hello World'
     """
     __metaclass__ = KPluginClass
     plugins = []
@@ -73,8 +68,8 @@ class KPlugin(object):
         Example:
             .. doctest::
                 :options: +SKIP
-                >>> @libsolace.plugin_registry.register
-                >>> class Foo(Plugin)
+                >>> @libkplug.plugin_registry.register
+                >>> class Foo(KPlugin)
                 >>> ...
         """
         logging.info("Registering Plugin id: %s from class: %s " % (object_class.plugin_name, object_class))
@@ -83,7 +78,6 @@ class KPlugin(object):
         self.plugins_dict[object_class.plugin_name] = o
 
         def _d(fn):
-            logging.info("CALL CALL CALL CALL CALL CALL")
             return functools.update_wrapper(object_class(fn), fn)
 
         functools.update_wrapper(_d, object_class)
@@ -95,7 +89,6 @@ class KPlugin(object):
         from the plugin_registry. You can then instantiate the class in any way you need to.
         Example:
             >>> import libkplug
-            >>> from libkplug import KPlugin
             >>> a = libkplug.plugin_registry("NullPlugin")
             >>> type(a)
         ""
@@ -123,7 +116,7 @@ class KPlugin(object):
         except:
             logging.warning("No plugin named: %s found, available plugins are: %s" % (args[0], self.plugins_dict))
             logging.warning(
-                "Please check the plugin is listed in the yaml config and that you have @libsolace.plugin_registry.register in the class")
+                "Please check the plugin is listed in the yaml config and that you have @libkplug.plugin_registry.register in the class")
             raise
 
     def set_exists(self, state):
