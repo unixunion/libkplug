@@ -46,9 +46,8 @@ setup(name='libkplug',
           'libkplug',
           'libksettings'
       ],
-      setup_requires=[
-
-      ],
+      use_scm_version=True,
+      setup_requires=['setuptools_scm', 'setuptools_scm_git_archive'],
       tests_require=[
           'nose2==0.8.0',
           'unittest2==1.1.0'
