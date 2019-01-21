@@ -9,11 +9,13 @@ development of applications that can have behaviors altered or extended through 
 
 Q: What are some example use-cases?
 
-A: Say I have developed a automation suite, which uses YAML files as a input source, with libkplug, I could abstract the
+A1: Say I have developed a automation suite, which uses YAML files as a input source, with libkplug, I could abstract the
 YAML file loader into a named "ConfigReaderPlugin", and ship my automation suite with ConfigReaderPlugin set to the YAML 
 file loader class 'YAMLFileLoader'. A user could then implement their own "ConfigReaderPlugin" which integrates with GIT, 
-with the same contract as YAMLFileReader, and by allowing the user to set a var 'ConfigPlugin=GitConfigLoader', the user 
-has the means to extend the application with ease.
+with the same contract as 'YAMLFileReader', and by allowing the user to set a variable 'ConfigPlugin=GitConfigLoader', 
+the user has the means to integrate the application with ease.
+
+A2: Another use-case has been to define 
 
 Q: How do I instantiate plugins without "knowing" the class type
 
@@ -263,3 +265,23 @@ Example initializing with DEFAULTS and named config file from env var
 ```
 
 
+# License
+
+```python
+    libkplug, a plugin system for python applications
+
+    Copyright (C) 2013 Kegan Holtzhausen
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+```
