@@ -41,6 +41,7 @@ setup(name='libkplug',
       description='Plugin Framework',
       author='Kegan Holtzhausen',
       author_email='marzubus@gmail.com',
+      url='https://github.com/unixunion/libkplug/',
       package_dir={'': 'src'},
       packages=[
           'libkplug',
