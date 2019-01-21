@@ -2,18 +2,26 @@
 
 libkplug is a simple framework for creating modular, configuration driven python applications.
 
-Q: How is this different from just standard modular development.
+Q: How is this different from just standard module development.
 
-A: The use cases for libkplug stem from a need to name classes to use for specific workloads at a configuration level, 
-and load and operate instances of those classes from named methods. .e.g `plugin_registry('some_plugin').my_static_method()` 
+A: libkplug provides mechanisms to import and instantiate instances of classes by string identifiers, allowing for 
+development of applications that can have behaviors altered or extended through config change alone.
 
-Q: How do I instantiate plugins without "knowing" the type
+Q: What are some example use-cases?
+
+A: Say I have developed a automation suite, which uses YAML files as a input source, with libkplug, I could abstract the
+YAML file loader into a named "ConfigReaderPlugin", and ship my automation suite with ConfigReaderPlugin set to the YAML 
+file loader class 'YAMLFileLoader'. A user could then implement their own "ConfigReaderPlugin" which integrates with GIT, 
+with the same contract as YAMLFileReader, and by allowing the user to set a var 'ConfigPlugin=GitConfigLoader', the user 
+has the means to extend the application with ease.
+
+Q: How do I instantiate plugins without "knowing" the class type
 
 A: Code
 ```python
-# read the class
+# read the class of a plugin
 clazz = libkplug.plugin_registry('SomePluginName')
-# instantiate with kwargs
+# instantiate with args and kwargs as usual
 myinst = clazz(key1=1, keyN='N')
 ```
 

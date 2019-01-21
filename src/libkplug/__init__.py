@@ -83,8 +83,8 @@ class KPlugin(object):
         from the plugin_registry. You can then instantiate the class in any way you need to.
         Example:
             >>> import libkplug
-            >>> a = libkplug.plugin_registry("NullPlugin")
-            >>> type(a)
+            >>> clazz = libkplug.plugin_registry("NullPlugin")
+            >>> type(clazz)
         ""
         :param args: name of Plugin to return
         :param kwargs:
