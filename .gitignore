@@ -3,3 +3,7 @@ venv
 *.py[cod]
 __pycache__/
 libkplug.egg-info/
+dist/
+version.py
+build/
+.eggs/
