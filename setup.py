@@ -38,18 +38,19 @@ with open(version_py, 'wt') as fh:
 
 setup(name='libkplug',
       version="{ver}".format(ver=version_git),
-      description='Plugable Project Framework',
+      description='Plugin Framework',
       author='Kegan Holtzhausen',
-      author_email='Kegan.Holtzhausen@kindredgroup.com',
+      author_email='marzubus@gmail.com',
       package_dir={'': 'src'},
       packages=[
           'libkplug',
           'libksettings'
       ],
       setup_requires=[
-          'nose2==0.8.0'
+
       ],
       tests_require=[
+          'nose2==0.8.0',
           'unittest2==1.1.0'
       ],
       install_requires=install_requires,
