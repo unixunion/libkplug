@@ -36,9 +36,14 @@ install_requires = [
 # with open(version_py, 'wt') as fh:
 #     fh.write("%s%s__version__=%s" % (version_msg, os.linesep, version_git))
 
-from setuptools_scm import get_version
-version_git = get_version(root='.', relative_to=__file__)
-version_git = '.'.join(version_git.split('.')[:2])
+try:
+    from setuptools_scm import get_version
+    version_git = get_version(root='.', relative_to=__file__)
+    version_git = '.'.join(version_git.split('.')[:2])
+except ImportError:
+    with open(version_py, 'rt') as fh:
+        version_git = "%s" % fh.read().strip().split('=')[-1].replace('"', '')
+        print("setting version from file")
 
 print("version: %s" % version_git)
 
