@@ -73,7 +73,7 @@ class KPlugin(object):
     __metaclass__ = KPluginClass
     plugins = []
     plugins_dict = OrderedDict()
-    plugin_name = "Plugin"
+    plugin_name = "KPlugin"
     """ the plugin's name, override this in the derived class!"""
     exists = False
 
@@ -95,6 +95,14 @@ class KPlugin(object):
         o = object_class
         self.plugins.append(o)
         self.plugins_dict[object_class.plugin_name] = o
+
+        # helper for sphinx to find docstrings
+        def _d(fn):
+            print("Sphinx helper")
+            return functools.update_wrapper(object_class(fn), fn)
+
+        functools.update_wrapper(_d, object_class)
+        return _d
 
     def __call__(self, *args, **kwargs):
         """
