@@ -61,7 +61,7 @@ setup(name='libkplug',
       use_scm_version=True,
       setup_requires=['setuptools_scm', 'setuptools_scm_git_archive'],
       tests_require=[
-          'nose2==0.8.0',
+          'nose2==0.10.0',
           'unittest2==1.1.0'
       ],
       install_requires=install_requires,
