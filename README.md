@@ -17,7 +17,7 @@ the user has the means to integrate the application with ease.
 
 A2: Another use-case has been to define 
 
-Q: How do I instantiate plugins without "knowing" the class type
+Q: How do I instantiate plugins without having the type imported before-hand?
 
 A: Code
 ```python
