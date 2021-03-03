@@ -264,6 +264,19 @@ Example initializing with DEFAULTS and named config file from env var
 1
 ```
 
+Example initializing with config search locations
+
+```python
+>>> import os
+>>> from libksettings import KSettings
+>>> os.environ.setdefault('MY_CONF', '/tmp/other.yaml')
+>>> settings = KSettings(config_filename='myconf.ysml', config_load_locations=["/opt/mysvc", "/etc/mysvc"], A='a', b=1, c=True, PLUGINS=['plugins.plugin_helloworld'])
+>>> settings.A
+'boo'
+>>> settings.B
+1
+```
+
 
 # License
 

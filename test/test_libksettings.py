@@ -19,7 +19,7 @@ class UnitTests(unittest.TestCase):
         reload(libksettings)
 
     def test_create(self):
-        settings = libksettings.KSettings(config_filename='other.yaml', A='a', b=1, c=True, PLUGINS=[])
+        settings = libksettings.KSettings(config_filename='other.yaml', config_load_locations=["."], A='a', b=1, c=True, PLUGINS=[])
         self.assertEqual(settings.A, 'a')
         self.assertEqual(settings.b, 1)
         self.assertEqual(settings.c, True)
@@ -34,7 +34,7 @@ class UnitTests(unittest.TestCase):
             settings2.KEY1
 
     def test_create_pathed_config(self):
-        settings = libksettings.KSettings(config_filename='other.yaml', A='a', b=1, c=True, PLUGINS=[])
+        settings = libksettings.KSettings(config_filename='%s/other.yaml' % os.path.dirname(os.path.abspath(__file__)), A='a', b=1, c=True, PLUGINS=[])
         self.assertEqual(settings.A, 'a')
         self.assertEqual(settings.b, 1)
         self.assertEqual(settings.c, True)
@@ -42,7 +42,7 @@ class UnitTests(unittest.TestCase):
 
     def test_create_env_config(self):
         os.environ.setdefault('MY_CONF', 'other.yaml')
-        settings = libksettings.KSettings(config_filename_envvar='MY_CONF', A='a', b=1, c=True, PLUGINS=[])
+        settings = libksettings.KSettings(config_filename_envvar='MY_CONF', config_load_locations=["."], A='a', b=1, c=True, PLUGINS=[])
         self.assertEqual(settings.A, 'a')
         self.assertEqual(settings.b, 1)
         self.assertEqual(settings.c, True)

@@ -64,7 +64,7 @@ class KSettings:
     config_file = ""
 
     def __init__(self, config_filename='config.yaml', config_filename_envvar='LIBKCONFIG', export_global=True,
-                 load_yaml=True, **kwargs):
+                 load_yaml=True, config_load_locations=["."], **kwargs):
 
         # copy kwargs into "defaults"
         for k, v in kwargs.items():
@@ -84,17 +84,23 @@ class KSettings:
                 logging.error("%s: unable to location config file: %s" % (e, self.config_file))
                 logging.error(e)
 
-            if not os.path.exists(self.config_file):
-                logging.error("No config file present: %s" % self.config_file)
-                raise FileNotFoundError("no config file present: %s" % self.config_file)
+            # if not os.path.exists(self.config_file):
+            for location in config_load_locations:
+                if not os.path.exists("%s/%s" % (location, self.config_file)):
+                    continue
+
+                self.config_file = "%s/%s" % (location, self.config_file)
+
+                #logging.error("No config file present: %s" % self.config_file)
+                #raise FileNotFoundError("no config file present: %s" % self.config_file)
 
             logging.info("Loading yaml file: %s" % self.config_file)
             stream = open(self.config_file, 'r')
-            yaml_settings = yaml.load(stream)
+            yaml_settings = yaml.safe_load(stream)
 
             # get the real values if any
             for variable in yaml_settings.keys():
-                logging.info("Setting config %s = %s" % (variable, yaml_settings[variable]))
+                logging.debug("Setting config %s = %s" % (variable, yaml_settings[variable]))
                 if export_global:
                     globals()[variable] = yaml_settings[variable]
                 self.config[variable] = yaml_settings[variable]
@@ -114,7 +120,7 @@ class KSettings:
             logging.info("Plugins to load: %s" % self.config['PLUGINS'])
 
         for p in self.config['PLUGINS']:
-            logging.info("Attempting to load plugin: %s" % p)
+            logging.debug("Attempting to load plugin: %s" % p)
             try:
                 __import__(p, globals())
             except Exception as e:
@@ -122,11 +128,11 @@ class KSettings:
                 raise
 
         if self.yaml_loaded is False and load_yaml:
-            msg = "Failed to find config file"
+            msg = "Failed to find config file: %s in locations: %s" % (config_filename, config_load_locations)
             logging.error(msg)
             raise Exception(msg)
 
-        logging.info("Config: %s" % self.config)
+        logging.debug("Config: %s" % self.config)
 
     def __getattr__(self, item):
         try:
