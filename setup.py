@@ -2,6 +2,13 @@ import os
 
 from setuptools import setup
 
+# read the contents of your README file
+from os import path
+
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+
 ROOT_DIR = os.path.dirname(__file__)
 SOURCE_DIR = os.path.join(ROOT_DIR)
 
@@ -11,6 +18,7 @@ version_py = os.path.join(os.path.dirname(__file__), 'version.py')
 
 try:
     from setuptools_scm import get_version
+
     version_git = get_version(root='.', relative_to=__file__)
     version_git = '.'.join(version_git.split('.')[:3])
     print("setting version from git: %s" % version_git)
@@ -28,6 +36,8 @@ setup(name='libkplug',
       author_email='marzubus@gmail.com',
       url='https://github.com/unixunion/libkplug/',
       package_dir={'': 'src'},
+      long_description=long_description,
+      long_description_content_type='text/markdown',
       install_requires=[
           'PyYAML>=3.11'
       ],
