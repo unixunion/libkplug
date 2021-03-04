@@ -15,8 +15,6 @@ file loader class 'YAMLFileLoader'. A user could then implement their own "Confi
 with the same contract as 'YAMLFileReader', and by allowing the user to set a variable 'ConfigPlugin=GitConfigLoader', 
 the user has the means to integrate the application with ease.
 
-A2: Another use-case has been to define 
-
 Q: How do I instantiate plugins without having the type imported before-hand?
 
 A: Code
