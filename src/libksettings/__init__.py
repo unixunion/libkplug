@@ -95,8 +95,8 @@ class KSettings:
                 #raise FileNotFoundError("no config file present: %s" % self.config_file)
 
             logging.info("Loading yaml file: %s" % self.config_file)
-            stream = open(self.config_file, 'r')
-            yaml_settings = yaml.safe_load(stream)
+            with open(self.config_file, 'r') as stream:
+                yaml_settings = yaml.safe_load(stream)
 
             # get the real values if any
             for variable in yaml_settings.keys():
