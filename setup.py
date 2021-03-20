@@ -16,13 +16,6 @@ SOURCE_DIR = os.path.join(ROOT_DIR)
 # Also, when git is not available (PyPi package), use stored version.py.
 version_py = os.path.join(os.path.dirname(__file__), 'version.py')
 
-# try:
-#     from setuptools_scm import get_version
-#
-#     version_git = get_version(root='.', relative_to=__file__)
-#     version_git = '.'.join(version_git.split('.')[:3])
-#     print("setting version from git: %s" % version_git)
-# except ImportError:
 with open(version_py, 'rt') as fh:
     version = "%s" % fh.read().strip().split('=')[-1].replace('"', '').strip()
     print("setting version from file: %s" % version)
